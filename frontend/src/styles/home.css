@@ -1,0 +1,854 @@
+@import url("https://fonts.googleapis.com/css2?family=Delius+Swash+Caps&display=swap");
+/* Global Styles */
+html{
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  color: aliceblue;
+  background: linear-gradient(60deg, #C3A390, #97705B);
+  background-position: top center;
+  background-size: 100% 100%;
+  background-attachment: fixed;
+  padding: 0;
+}
+a {
+  text-decoration: none;
+  color: white;
+}
+body {
+  width: 70%;
+  margin: 0 auto;
+  text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.5); 
+  font-family: "Delius Swash Caps", cursive;
+}
+/* Header */
+header {
+  width: 100%;
+  height: 45px;
+  padding: 15px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #BB917B;
+  border-radius: 20px;
+  box-shadow: 4px 4px 8px 0px rgba(34, 60, 80, 0.3);  margin-top: 10px;
+}
+.header {
+  width: 100%;
+  height: 45px;
+  padding: 15px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #BB917B;
+  border-radius: 20px;
+  box-shadow: 4px 4px 8px 0px rgba(34, 60, 80, 0.3);  margin-top: 10px;
+}
+header a {
+  color: white;
+  text-decoration: none;
+  margin: 0 10px;
+  text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.5); 
+}
+.header a {
+  color: white;
+  text-decoration: none;
+  margin: 0 10px;
+  text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.5); 
+}
+
+/* Main Content */
+section {
+  text-align: left;
+  margin-top: 40px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: rgba(0, 0, 0, 0.1);
+  padding: 15px;
+  border-radius: 40px;
+  box-shadow: 4px 4px 8px 0px rgba(34, 60, 80, 0.3);
+}
+
+.text1{
+  font-size: 24px;
+  width: 890px;
+}
+
+.img1_box{
+  width: 230px;
+  height: 230px;
+  background-color: rgba(0, 0, 0, 0.3);
+  border-radius: 30px;
+}
+
+.img1{
+  width: 230px;
+  height: 230px;
+}
+
+.section2 {
+  text-align: left;
+  margin-top: 40px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: rgba(0, 0, 0, 0.1);
+  padding: 15px;
+  border-radius: 40px;
+  box-shadow: 4px 4px 8px 0px rgba(34, 60, 80, 0.3);
+}
+
+.text2{
+  font-size: 24px;
+}
+
+.img2_box{
+  width: 230px;
+  height: 230px;
+  background-color: rgba(0, 0, 0, 0.3);
+  border-radius: 30px;
+}
+
+.img2{
+  width: 230px;
+  height: 230px;
+}
+
+h2 {
+  font-size: 36px;
+  font-weight: bold;
+  margin-bottom: 16px;
+}
+
+p {
+  font-size: 24px;
+  line-height: 1.6;
+}
+.Delete_button{
+  width: 25px;
+  height: 25px;
+  background-color: rgba(218, 51, 51, 0);
+  border: none;
+  font-size: 20px;
+  text-shadow: 2px 2px 3px rgba(66, 68, 90, 1);
+  cursor: pointer;
+}
+/* Image Blocks */
+.image-block {
+  background-color: #8D6A58;
+  padding: 16px;
+  border-radius: 12px;
+  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.image-block img {
+  width: 180px;
+  height: 180px;
+  object-fit: cover;
+  border-radius: 8px;
+}
+
+/* Features List */
+.features-list {
+  list-style: none;
+  padding: 0;
+  margin: 40px 0;
+  font-size: 18px;
+}
+
+.features-list li {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 12px;
+}
+
+.features-list li span {
+  color: #4fa3f7;
+  font-size: 20px;
+}
+
+/* Contact Box */
+.contact_section{
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}
+.main_box{
+	width: 523px;
+	height: 470px;
+	background: linear-gradient(60deg, #D9C7B7, #BBA28C);
+	margin-top: 50px;
+	border-radius: 30px;
+  display: flex;
+  flex-wrap: wrap;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+.sm_box{
+	width: 155px;
+	height: 155px;
+  background-color: #D9D9D9;
+  border-radius: 25px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+}
+.sm_main_box{
+	width: 155px;
+  height: 224px;
+  text-align: center;
+}
+
+/* Main Box */
+.Mroot{
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  width: 100%;
+  margin-top: 10px;
+}
+.Mleft_per_box{
+  width: 400px;
+  height: 880px;
+  background-color: rgba(217, 217, 217, 0.2);
+  padding: 5px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-evenly;
+  box-shadow: 5px 4px 22px 3px rgba(34, 60, 80, 0.2);
+  border-radius: 35px 0px 35px 35px;
+}
+.Mper_circle{
+  width: 217px;
+  height: 217px;
+  background: linear-gradient(170deg, rgb(203, 162, 138), rgb(176, 141, 121));
+  border-radius: 50%;
+  border: 6px solid #b3dbe2;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 5px 4px 22px 3px rgba(34, 60, 80, 0.2);
+}
+.Mper_text_big{
+  font-size: 80px;
+  height: 115px;
+  margin-bottom: 0px;
+}
+.Mper_text{
+  font-size: 14px;
+  height: 30px;
+}
+.Mbox_params{
+  width: 400px;
+  height: 300px;
+  font-size: 15px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  align-items: center;
+}
+.Mleaft_param_pox{
+  font-size: 25px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  width: 360px;
+  height: 35px;
+  background: linear-gradient(0deg, rgb(199, 196, 196), rgb(231, 226, 212));
+  padding: 10px;
+  border-radius: 50px;
+  color: black;
+  text-shadow: none;
+  box-shadow: 5px 10px 10px 0px rgba(0, 0, 0, 0.2);
+}
+/* Right Main Box */
+.Mheader{
+  width: 100%;
+  height: 65px;
+  background-color: #BB917B;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  text-decoration: none;
+  border-radius: 0px 20px 20px 0px;
+}
+.Mlogout_button{
+  width: 40px;
+  height: 40px;
+  background-color: #D8D1C1;
+  border-radius: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: black;
+  text-shadow: none;
+  font-size: 23px;
+  cursor: pointer;
+}
+.Mlogout_text{
+  font-size: 20px;
+  margin-left: 10px;
+  cursor: pointer;
+}
+.Mlogout_zone{
+  display: flex;
+  flex-direction: row;
+  justify-content: end;
+  align-items: center;
+  margin-left: 15px;
+}
+.Mprofile_button{
+  width: 40px;
+  height: 40px;
+  background-color: #D8D1C1;
+  border-radius: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: black;
+  text-shadow: none;
+  font-size: 23px;
+}
+.Mprofile_zone{
+  display: flex;
+  flex-direction: row;
+  justify-content: end;
+  align-items: center;
+  margin-right: 15px;
+}
+.Mprofile_name{
+  font-size: 20px;
+  margin-right: 10px;
+}
+.Mright_box{
+  display: flex;
+  flex-direction: row;
+}
+.Mright_left_box{
+  display: flex;
+  flex-direction: column;
+  width: 700px;
+  margin-left: 50px;
+  margin-right: 50px;
+}
+.Mdate_n_search{
+  width: 700px;
+  height: 120px;
+  display: flex;
+  flex-direction: column;
+}
+.Mdate{
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  width: 680px;
+  height: 60px;
+}
+.Mdate_button{
+  width: 45px;
+  height: 45px;
+  background-color: #D8D1C1;
+  border-radius: 45px;
+  color: black;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-shadow: none;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+  font-size: 22px;
+  cursor: pointer;
+}
+.Msearch{
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  width: 680px;
+  height: 60px;
+  margin-top: 5px;
+}
+.Msearch_left{
+  width: 620px;
+  height: 58px;
+  background-color: #FAF6EA;
+  border-radius: 60px 0px 0px 60px;
+  cursor: pointer;
+}
+.Msearch_right{
+  width: 60px;
+  height: 60px;
+  background-color: #FAF6EA;
+  border-radius: 0px 60px 60px 0px;
+  font-size: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-shadow: none;
+  background: linear-gradient(45deg, rgb(228, 200, 188), rgb(212, 184, 172));
+  cursor: pointer;
+  color: black;
+}
+.Mfood_list_src{
+  width: 680px;
+  margin-top: 30px;
+  padding: 10px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  background-color: rgba(216, 209, 193, 0.6);
+  border-radius: 30px;
+}
+.search_contant{
+  width: 600px;
+  height: 50px;
+  margin: 0;
+}
+.search_contant:hover{
+  color:#ffffff;
+  cursor: pointer;
+}
+.Madd_food_box{
+  width: 700px;
+  height: 400px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+}
+.Mfood_pic_big_box{
+  width: 350px;
+  height: 350px;
+  background-color: rgba(216, 209, 193, 0.6);
+  border-radius: 40px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.Mfood_name{
+  width: 350px;
+  height: 30px;
+  color: black;
+  text-shadow: 4px 4px 25px 0px rgba(41, 42, 43, 0.1);
+  text-align: center;
+  font-size: 30px;
+  margin-top: 5px;
+}
+.Mpic_food{
+  width: 320px;
+  height: 230px;
+}
+.Madd_food_right_box{
+  width: 350px;
+  height: 350px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+}
+.Mfood_right_box_text{
+  font-size: 35px;
+  width: 350px;
+  height: 50px;
+  text-align: center;
+  margin-top: 1cap;
+}
+.Menter_foob_gram{
+  width: 250px;
+  height: 55px;
+  background-color: rgba(216, 209, 193, 1);
+  color: rgb(75, 75, 75);
+  font-size: 20px;
+  text-align: center;
+  font-family: "Delius Swash Caps", cursive;
+  border-radius: 70px;
+  box-shadow: 4px 4px 16px 0px rgba(34, 60, 80, 0.25);
+  margin-bottom: 50px;
+}
+.Madd_food_button{
+  width: 250px;
+  height: 55px;
+  background-color: rgba(216, 209, 193, 1);
+  border-radius: 70px;
+  box-shadow: 4px 4px 16px 0px rgba(34, 60, 80, 0.25);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 30px;
+  color: #3af146;
+  margin-bottom: 10px;
+  cursor: pointer;
+}
+.Mfood_params_tabel{
+  width: 700px;
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  justify-content: center;
+  
+}
+.nutrition-box {
+  width: 650px;
+  height: 275px;
+  background-color: #b68b74;
+  color: #fff;
+  font-family: 'Comic Sans MS', cursive, sans-serif;
+  border-radius: 12px;
+  padding: 15px;
+  box-shadow: 4px 4px 16px 0px rgba(34, 60, 80, 0.25);
+  font-size: 30px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  align-items: stretch;
+}
+.row {
+  display: flex;
+  justify-content: space-between;
+  margin: 8px 0;
+}
+/* Notepad Main Box */
+.Mright_right_box{
+  width: 500px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+.notepad {
+  width: 415px;
+  height: 800px;
+  background-size: cover;
+  background-repeat: no-repeat;
+  padding: 60px 20px 20px;
+  box-sizing: border-box;
+  border-radius: 20px;
+  font-family: 'Comic Sans MS', cursive;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  box-shadow: 54px 12px 37px -18px rgba(34, 60, 80, 0.25);
+}
+.notebook-title{
+  margin: 0;
+  font-size: 30px;
+  color: black;
+  text-shadow: none;
+  text-align: center;
+  margin-top: -40px;
+  margin-bottom: 30px;
+  margin-left: 50px;
+}
+.data-table {
+  margin-left: 35px;
+  margin-top: -10px;
+  color: black;
+  text-shadow: 4px 4px 25px 0px rgba(41, 42, 43, 0.1)
+}
+.Mtable_food_name{
+  width: 220px;
+  height: 58px;
+  font-size: 30px;
+}
+.Mtable_food_weight{
+  width: 100px;
+  height: 58px;
+  font-size: 20px;
+  text-align: center;
+}
+.Mtable_food_rad{
+  width: 30px;
+  height: 58px;
+  text-align: center;
+}
+
+/* =============================== */
+/*           MOBILE (0–480px)      */
+/* =============================== */
+@media (max-width: 480px) {
+
+  body {
+    width: 95%;
+    text-shadow: none;
+  }
+
+  ul {
+    list-style: none;
+    padding: 0;   /* чтобы убрать отступ слева */
+    margin: 0;
+  }
+
+  header, .header {
+    width: 95%;
+    height: auto;
+    padding: 10px;
+    flex-direction: row;
+    gap: 8px;
+  }
+
+  .Mheader{
+  width: 100%;
+  border-radius: 20px;
+  margin-top: 20px;
+}
+
+  header a, .header a {
+    font-size: 18px;
+    margin: 4px 0;
+  }
+
+  /* SECTION BLOCKS */
+  section, .section2 {
+    flex-direction: column;
+    text-align: center;
+    padding: 10px;
+  }
+
+  .text1, .text2 {
+    width: 90%;
+    font-size: 18px;
+    text-align: justify;
+  }
+
+  .img1_box, .img2_box,
+  .img1, .img2 {
+    width: 180px;
+    height: 180px;
+  }
+
+  /* CONTACT SECTION */
+  .main_box {
+    width: 90%;
+    height: 400px;
+    padding: 20px;
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction: row;
+    justify-content: space-around;
+  }
+
+  .sm_box, .sm_main_box {
+    width: 120px;
+    height: 120px;
+  }
+
+  /* MAIN ROOT LAYOUT */
+  .Mroot {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .Mleft_per_box {
+    width: 90%;
+    height: auto;
+    padding-bottom: 20px;
+  }
+
+  .Mper_circle {
+    width: 150px;
+    height: 150px;
+  }
+
+  .Mper_text_big {
+    font-size: 52px;
+  }
+
+  .Mbox_params {
+    width: 100%;
+    height: auto;
+  }
+
+  .Mleaft_param_pox {
+    width: 90%;
+    height: 30px;
+    margin-bottom: 15px;
+    font-size: 18px;
+  }
+
+  /* RIGHT MAIN BOX */
+  .Mright_box {
+    flex-direction: column;
+    width: 100%;
+  }
+
+  .Mright_left_box {
+    width: 100%;
+    margin: 0;
+  }
+
+  .Mdate_n_search,
+  .Mdate,
+  .Madd_food_box,
+  .Mfood_params_tabel {
+    width: 100%;
+    margin-top: 10px;
+    margin-bottom: 10px;
+  }
+
+  .Msearch{
+    width: 100%;
+    height: 50px;
+  }
+
+  .Msearch_left {
+    width: 85%;
+    height: 50px;
+  }
+
+  .Msearch_right {
+    width: 15%;
+    height: 52px;
+  }
+  .Mfood_list_src{
+    width: 90%;
+  }
+
+  .search_contant{
+    width: 90%;  
+  }
+
+  .Madd_food_box {
+    flex-direction: column;
+  }
+
+  .Mfood_pic_big_box {
+    width: 250px;
+    height: 250px;
+    margin-top: 15px;
+  }
+
+  .Mfood_name {
+    font-size: 30px;
+  }
+
+  .Mfood_right_box_text {
+    font-size: 22px;
+  }
+
+  .Menter_foob_gram,
+  .Madd_food_button {
+    width: 200px;
+    height: 50px;
+    font-size: 22px;
+  }
+
+  .nutrition-box {
+    width: 95%;
+    height: auto;
+    font-size: 20px;
+  }
+
+  /* NOTEPAD */
+  .Mright_right_box {
+    width: 100%;
+  }
+
+  .notepad {
+    width: 90%;
+    height: 565px;
+  }
+
+  .notebook-title {
+    font-size: 22px;
+    margin-left: 0;
+  }
+
+  .data-table {
+    margin-left: 55px;
+    margin-top: -20px;
+  }
+
+  .Mtable_food_name {
+    width: 140px;
+    font-size: 19px;
+  }
+
+  .Mtable_food_weight {
+    width: 60px;
+    font-size: 16px;
+  }
+
+  .Mtable_food_rad {
+    width: 20px;
+  }
+
+  /* IMAGES */
+  .image-block img {
+    width: 140px;
+    height: 140px;
+  }
+
+  /* HEADINGS & TEXT */
+  h2 {
+    font-size: 28px;
+  }
+
+  p {
+    font-size: 18px;
+  }
+  .home_title{
+    display: none;
+  }
+}
+
+/* =============================== */
+/*       TABLET (480–768px)        */
+/* =============================== */
+@media (max-width: 768px) {
+
+  body {
+    width: 90%;
+  }
+
+  section, .section2 {
+    flex-direction: column;
+    text-align: center;
+  }
+
+  .Mright_box {
+    flex-direction: column;
+  }
+
+  .Mleft_per_box{
+    width: 100%;
+    margin: 0;
+    border-radius: 35px;
+  }
+
+  .Mright_left_box{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .Mright_right_box{
+    margin-top: 150px;
+  }
+
+  .Mfood_pic_big_box {
+    width: 320px;
+    height: 300px;
+  }
+
+  .nutrition-box {
+    width: 100%;
+  }
+
+  .notepad {
+    width: 95%;
+  }
+  .home_title{
+    display: none;
+  }
+}

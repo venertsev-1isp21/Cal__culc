@@ -1,0 +1,107 @@
+.Rcenter_box_child{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 520px;
+  height: 700px;
+  border-radius: 30px;
+  background: linear-gradient(120deg, #d1bfaf, #b19882);
+  margin-bottom: 200px;
+}
+.Rcenter_inbox{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 450px;
+  height: 650px;
+  background-color: rgba(0, 0, 0, 0.2);
+  border-radius: 25px;
+}
+.Rlogin_text{
+  margin-left: 5px;
+  font-size: 15px;
+}
+.Lcenter_box{
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly;
+}
+.Lleft_box{
+  padding-right: 213px;
+}
+.Lbig_login{
+  font-size: 40px;
+  text-align: center;
+}
+.Lform{
+  padding-bottom: 20px
+}
+.Linput{
+  width: 375px;
+  height: 40px;
+  background-color: #E7E2D4;
+  border-radius: 20px;
+}
+.Lroot {
+  display: flex;
+  justify-content: flex-start;
+  width: 1200px;
+  height: auto;
+}
+
+/* =========================================
+   MOBILE ADAPTATION: R/L login boxes
+   ========================================= */
+@media (max-width: 768px) {
+
+  /* Главный контейнер */
+  .Lroot {
+    width: 100%;
+    flex-direction: column;
+    align-items: center;
+    padding: 20px 0;
+  }
+
+  .Lleft_box {
+    width: 100%;
+    padding-right: 0;
+    align-items: flex-start;
+  }
+
+  /* Центральная колонка */
+  .Lcenter_box {
+    width: 100%;
+    align-items: center;
+  }
+
+
+  .Rcenter_box_child {
+    width: 90%;
+    height: auto;
+    margin-bottom: 50px;
+    padding: 20px;
+  }
+
+  .Rcenter_inbox {
+    width: 90%;
+    height: auto;
+    padding: 15px;
+  }
+
+  /* Поля ввода */
+  .Linput {
+    width: 100%;
+  }
+
+  /* Шрифты */
+  .Lbig_login {
+    font-size: 28px;
+  }
+
+  .Rlogin_text,
+  .Llogin_text {
+    font-size: 15px;
+  }
+}
