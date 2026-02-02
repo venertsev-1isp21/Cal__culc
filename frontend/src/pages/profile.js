@@ -1,74 +1,66 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 import { Link } from 'react-router-dom';
 import axios from 'axios';
+import { useQuery } from '@tanstack/react-query';
+
 import profDefault from "../assets/prof_img.png";
 
-const Profile = () => {
-  const [userInfo, setUserInfo] = useState({
-    username: "",
-    height: "",
-    weight: "",
-    age: "",
-    gender: "",
-    calorie_norm: 0
-  });
+const API = "http://127.0.0.1:8000/api";
 
+const Profile = () => {
   const token = localStorage.getItem("access_token");
 
+  // =============================
+  // LOGOUT
+  // =============================
   const handleLogout = () => {
     localStorage.removeItem('access_token');
     localStorage.removeItem('refresh_token');
     window.location.href = '/login';
   };
 
-  const refreshToken = async () => {
-    try {
-      const refresh = localStorage.getItem("refresh_token");
-      const response = await axios.post(
-        "http://127.0.0.1:8000/api/api/token/refresh/",
-        { refresh }
+  // =============================
+  // QUERY: USER INFO
+  // =============================
+  const {
+    data: userInfo,
+    isLoading,
+    isError,
+    error
+  } = useQuery({
+    queryKey: ['userInfo'],
+    queryFn: async () => {
+      const res = await axios.get(
+        `${API}/user_info/`,
+        { headers: { Authorization: `Bearer ${token}` } }
       );
-      localStorage.setItem("access_token", response.data.access);
-      return response.data.access;
-    } catch {
-      handleLogout();
-    }
-  };
-
-  const fetchUserInfo = async () => {
-    try {
-      let access = token;
-      const res = await axios.get("http://127.0.0.1:8000/api/user_info/", {
-        headers: { Authorization: `Bearer ${access}` }
-      });
-      setUserInfo(res.data);
-    } catch (err) {
+      return res.data;
+    },
+    enabled: !!token, // 🔥 dependent query
+    retry: 1,
+    onError: (err) => {
       if (err.response?.status === 401) {
-        const newAccess = await refreshToken();
-        if (newAccess) {
-          const res = await axios.get("http://127.0.0.1:8000/api/user_info/", {
-            headers: { Authorization: `Bearer ${newAccess}` }
-          });
-          setUserInfo(res.data);
-        }
-      } else {
-        console.error(err);
+        handleLogout();
       }
     }
-  };
+  });
 
-  useEffect(() => {
-    fetchUserInfo();
-  }, []);
+  if (isLoading) {
+    return <div className="Lroot">Загрузка профиля...</div>;
+  }
+
+  if (isError) {
+    return <div className="Lroot">Ошибка: {error.message}</div>;
+  }
 
   return (
     <div className="Lroot">
+
       <div className="Lleft_box">
         <Link to="/main" className="Lbutton_back">⬅️ Back</Link>
       </div>
 
       <div className="Lcenter_box">
-
         <p className="Lbig_login">Profile</p>
 
         <div className="Lcenter_box_child">
@@ -77,6 +69,7 @@ const Profile = () => {
             src={profDefault}
             alt="Извините, изображения нет"
           />
+
           <p className="Lenter_y_data">{userInfo.username}</p>
 
           <div className="Lcenter_inbox">
@@ -108,15 +101,15 @@ const Profile = () => {
 
           </div>
         </div>
-
       </div>
 
       <div className="Lright_box">
         <div className="Mlogout_zone" onClick={handleLogout}>
-            <div className="Mlogout_button">↪</div>
-              <p className="Mlogout_text">Log out</p>
+          <div className="Mlogout_button">↪</div>
+          <p className="Mlogout_text">Log out</p>
         </div>
       </div>
+
     </div>
   );
 };

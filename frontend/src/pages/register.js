@@ -1,9 +1,15 @@
 import React, { useState } from "react";
-import axios from "axios";
 import { Link, useNavigate } from 'react-router-dom';
-import "../styles/reg.css"
+import axios from "axios";
+import { useMutation } from '@tanstack/react-query';
+
+import "../styles/reg.css";
+
+const API = "http://127.0.0.1:8000/api";
 
 const Register = () => {
+  const navigate = useNavigate();
+
   const [formData, setFormData] = useState({
     username: "",
     password: "",
@@ -13,39 +19,52 @@ const Register = () => {
     gender: ""
   });
 
-  const navigate = useNavigate();
-
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
-  }
+  };
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    try {
-      await axios.post("http://127.0.0.1:8000/api/register/", formData);
+  // =============================
+  // MUTATION: REGISTER
+  // =============================
+  const registerMutation = useMutation({
+    mutationFn: async (data) => {
+      await axios.post(`${API}/register/`, data);
+    },
+    onSuccess: () => {
       window.showErrorPopup("Успешная регистрация!");
       navigate("/login");
-    } catch (err) {
-      console.error(err);
+    },
+    onError: () => {
       window.showErrorPopup("Ошибка регистрации!");
-      return;
     }
-  }
+  });
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    registerMutation.mutate(formData);
+  };
 
   return (
     <div className="Lroot">
+
       <div className="Lleft_box">
         <Link to="/contact" className="Lbutton_back">⬅️ Back</Link>
       </div>
 
       <div className="Lcenter_box">
         <p className="Lbig_login">Register</p>
+
         <div className="Rcenter_box_child">
           <div className="Rcenter_inbox">
+
             <form className="Lform" onSubmit={handleSubmit}>
+
               {["username", "password", "height", "weight", "age", "gender"].map((field) => (
                 <div key={field}>
-                  <p className="Rlogin_text">{field.charAt(0).toUpperCase() + field.slice(1)}</p>
+                  <p className="Rlogin_text">
+                    {field.charAt(0).toUpperCase() + field.slice(1)}
+                  </p>
+
                   <input
                     name={field}
                     placeholder={`Enter ${field}`}
@@ -56,11 +75,21 @@ const Register = () => {
                   />
                 </div>
               ))}
-              <button type="submit" className="Lenter_button">➡️ Register</button>
+
+              <button
+                type="submit"
+                className="Lenter_button"
+                disabled={registerMutation.isPending}
+              >
+                {registerMutation.isPending ? "Registering..." : "➡️ Register"}
+              </button>
+
             </form>
+
           </div>
         </div>
       </div>
+
     </div>
   );
 };
