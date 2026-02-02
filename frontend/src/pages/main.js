@@ -1,26 +1,22 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { Link } from 'react-router-dom';
 import axios from 'axios';
+import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
+
 import notepadImg from "../assets/notepad.png";
 import foodDefault from "../assets/notebook.png";
 
+const API = "http://127.0.0.1:8000/api";
+
 const Main = () => {
-  const [rows, setRows] = useState([]);
-  const [selectedDate, setSelectedDate] = useState(new Date()); // текущая дата
-  const [newAmount, setNewAmount] = useState("");
-  const [userInfo, setUserInfo] = useState({ username: "", calorie_norm: 0 });
+  const queryClient = useQueryClient();
+  const token = localStorage.getItem("access_token");
 
-  // TOTAL KБЖУ
-  const [totalCalories, setTotalCalories] = useState(0);
-  const [totalProteins, setTotalProteins] = useState(0);
-  const [totalFats, setTotalFats] = useState(0);
-  const [totalCarbs, setTotalCarbs] = useState(0);
-
-  // SEARCH
+  const [selectedDate, setSelectedDate] = useState(new Date());
   const [searchQuery, setSearchQuery] = useState("");
   const [searchResults, setSearchResults] = useState([]);
+  const [newAmount, setNewAmount] = useState("");
 
-  // SELECTED FOOD
   const [selectedFood, setSelectedFood] = useState({
     id: null,
     name: "",
@@ -31,194 +27,153 @@ const Main = () => {
     photo: ""
   });
 
-  const token = localStorage.getItem("access_token");
-
-  // DATE
+  // =============================
+  // HELPERS
+  // =============================
   const formatDate = (date) => date.toISOString().split('T')[0];
+  const formattedDate = formatDate(selectedDate);
 
-  const changeDate = (days) => {
-    const newDate = new Date(selectedDate);
-    newDate.setDate(newDate.getDate() + days);
-    setSelectedDate(newDate);
+  const authHeader = {
+    headers: { Authorization: `Bearer ${token}` }
   };
 
-  // =============================
-  // LOGOUT
-  // =============================
+  const changeDate = (days) => {
+    const d = new Date(selectedDate);
+    d.setDate(d.getDate() + days);
+    setSelectedDate(d);
+  };
+
   const handleLogout = () => {
     localStorage.removeItem('access_token');
     localStorage.removeItem('refresh_token');
     window.location.href = '/login';
   };
 
-  const refreshToken = async () => {
-    try {
-      const refresh = localStorage.getItem("refresh_token");
-      const response = await axios.post("http://127.0.0.1:8000/api/api/token/refresh/", { refresh });
-      localStorage.setItem("access_token", response.data.access);
-      return response.data.access;
-    } catch {
-      handleLogout();
+  // =============================
+  // QUERIES
+  // =============================
+  const { data: userInfo } = useQuery({
+    queryKey: ['userInfo'],
+    queryFn: async () => {
+      const res = await axios.get(`${API}/user_info/`, authHeader);
+      return res.data;
     }
-  };
+  });
 
-  const fetchUserData = async () => {
-    try {
-      let access = token;
-      try {
-        const res = await axios.get("http://127.0.0.1:8000/api/user_info/", {
-          headers: { Authorization: `Bearer ${access}` }
-        });
-        setUserInfo(res.data);
-      } catch (err) {
-        if (err.response?.status === 401) {
-          access = await refreshToken();
-          const res = await axios.get("http://127.0.0.1:8000/api/user_info/", {
-            headers: { Authorization: `Bearer ${access}` }
-          });
-          setUserInfo(res.data);
-        }
-      }
-    } catch (err) {
-      console.error(err);
-    }
-  };
+  const { data: rows = [], isLoading } = useQuery({
+    queryKey: ['meals', formattedDate],
+    queryFn: async () => {
+      const res = await axios.get(
+        `${API}/meals/?date=${formattedDate}`,
+        authHeader
+      );
+      return res.data;
+    },
+    // ✅ Advanced feature (шаг 4)
+    refetchInterval: 60000
+  });
 
   // =============================
-  // LOAD MEALS + TOTAL KБЖУ
+  // MUTATIONS
   // =============================
-  const fetchMeals = async () => {
-    try {
-      let access = token;
-      const formattedDate = formatDate(selectedDate);
-      try {
-        const res = await axios.get(`http://127.0.0.1:8000/api/meals/?date=${formattedDate}`, {
-          headers: { Authorization: `Bearer ${access}` }
-        });
-        setRows(res.data);
-
-        // расчет БЖУ
-        const totalCals = res.data.reduce((s, m) => s + (m.calories || 0), 0);
-        const totalProt = res.data.reduce((s, m) => s + (m.proteins || 0), 0);
-        const totalFat  = res.data.reduce((s, m) => s + (m.fats || 0), 0);
-        const totalCarb = res.data.reduce((s, m) => s + (m.carbohydrates || 0), 0);
-
-        setTotalCalories(totalCals);
-        setTotalProteins(totalProt);
-        setTotalFats(totalFat);
-        setTotalCarbs(totalCarb);
-
-      } catch (err) {
-        if (err.response?.status === 401) {
-          access = await refreshToken();
-          fetchMeals();
-        }
-      }
-    } catch (err) {
-      console.error(err);
+  const addMealMutation = useMutation({
+    mutationFn: async () =>
+      axios.post(
+        `${API}/meals/`,
+        {
+          food: selectedFood.id,
+          amount: parseInt(newAmount),
+          date: formattedDate,
+        },
+        authHeader
+      ),
+    onSuccess: () => {
+      queryClient.invalidateQueries(['meals']);
+      setNewAmount("");
+      setSearchQuery("");
+      setSelectedFood({
+        id: null,
+        name: "",
+        calories: 0,
+        proteins: 0,
+        fats: 0,
+        carbohydrates: 0,
+        photo: ""
+      });
     }
-  };
+  });
 
-  useEffect(() => {
-    fetchUserData();
-    fetchMeals();
-  }, []);
+  // =============================
+  // OPTIMISTIC DELETE (шаг 3)
+  // =============================
+  const deleteMealMutation = useMutation({
+    mutationFn: (id) =>
+      axios.delete(`${API}/meals/${id}/`, authHeader),
 
-  useEffect(() => {
-    fetchMeals(); // обновляем список при смене даты
-  }, [selectedDate]);
+    onMutate: async (id) => {
+      await queryClient.cancelQueries(['meals', formattedDate]);
+
+      const previousMeals = queryClient.getQueryData(['meals', formattedDate]);
+
+      queryClient.setQueryData(['meals', formattedDate], old =>
+        old.filter(m => m.id !== id)
+      );
+
+      return { previousMeals };
+    },
+
+    onError: (err, id, context) => {
+      if (context?.previousMeals) {
+        queryClient.setQueryData(
+          ['meals', formattedDate],
+          context.previousMeals
+        );
+      }
+    },
+
+    onSettled: () => {
+      queryClient.invalidateQueries(['meals']);
+    }
+  });
+
+  // =============================
+  // TOTALS
+  // =============================
+  const totalCalories = rows.reduce((s, m) => s + (m.calories || 0), 0);
+  const totalProteins = rows.reduce((s, m) => s + (m.proteins || 0), 0);
+  const totalFats = rows.reduce((s, m) => s + (m.fats || 0), 0);
+  const totalCarbs = rows.reduce((s, m) => s + (m.carbohydrates || 0), 0);
+
+  const caloriePercentage = userInfo?.calorie_norm
+    ? Math.round((totalCalories / userInfo.calorie_norm) * 100)
+    : 0;
 
   // =============================
   // SEARCH FOOD
   // =============================
   const handleSearchChange = async (e) => {
-    const query = e.target.value;
-    setSearchQuery(query);
+    const q = e.target.value;
+    setSearchQuery(q);
 
-    setSelectedFood({ id: null, name: "", calories: 0, proteins: 0, fats: 0, carbohydrates: 0, photo: "" });
+    setSelectedFood({
+      id: null, name: "", calories: 0, proteins: 0, fats: 0, carbohydrates: 0, photo: ""
+    });
 
-    if (!query) return setSearchResults([]);
+    if (!q) return setSearchResults([]);
 
-    try {
-      const res = await axios.get(`http://127.0.0.1:8000/api/foods/?q=${query}`, {
-        headers: { Authorization: `Bearer ${token}` }
-      });
-      setSearchResults(res.data);
-    } catch (err) {
-      console.error(err);
-    }
+    const res = await axios.get(`${API}/foods/?q=${q}`, authHeader);
+    setSearchResults(res.data);
   };
 
-  // =============================
-  // SELECT FOOD
-  // =============================
   const handleSelectFood = (food) => {
     setSelectedFood({
-      id: food.id,
-      name: food.name,
-      calories: food.calories,
-      proteins: food.proteins,
-      fats: food.fats,
-      carbohydrates: food.carbohydrates,
+      ...food,
       photo: food.photo || foodDefault
     });
     setSearchResults([]);
   };
-  // =============================
-  // DELETE FOOD
-  // =============================
-  const recalcTotals = (meals) => {
-    const totalCals = meals.reduce((s, m) => s + (m.calories || 0), 0);
-    const totalProt = meals.reduce((s, m) => s + (m.proteins || 0), 0);
-    const totalFat  = meals.reduce((s, m) => s + (m.fats || 0), 0);
-    const totalCarb = meals.reduce((s, m) => s + (m.carbohydrates || 0), 0);
 
-    setTotalCalories(totalCals);
-    setTotalProteins(totalProt);
-    setTotalFats(totalFat);
-    setTotalCarbs(totalCarb);
-  };
-
-  // =============================
-  // ADD MEAL
-  // =============================
-  const addRow = async () => {
-  if (!selectedFood.name) return alert("Выберите продукт");
-  if (!newAmount || isNaN(newAmount)) return alert("Введите корректное количество");
-
-  try {
-    const res = await axios.post(
-      "http://127.0.0.1:8000/api/meals/",
-      {
-        food: selectedFood.id,
-        amount: parseInt(newAmount),
-        date: formatDate(selectedDate)  // <-- передаём выбранную дату
-      },
-      { headers: { Authorization: `Bearer ${token}` } }
-    );
-
-    setNewAmount("");
-    setSelectedFood({
-      name: "",
-      calories: 0,
-      proteins: 0,
-      fats: 0,
-      carbohydrates: 0,
-      photo: ""
-    });
-    setSearchQuery("");
-
-    fetchMeals(); // обновляем список еды
-  } catch (err) {
-    console.error(err);
-    alert("Ошибка добавления продукта");
-  }
-};
-
-
-  const caloriePercentage = userInfo.calorie_norm
-    ? Math.round((totalCalories / userInfo.calorie_norm) * 100)
-    : 0;
+  if (isLoading) return <div>Загрузка...</div>;
 
   return (
     <div className="Mroot">
@@ -228,7 +183,7 @@ const Main = () => {
 
         <div className="Mper_circle">
           <h1 className="Mper_text_big">{caloriePercentage}%</h1>
-          <p className="Mper_text">From {userInfo.calorie_norm}</p>
+          <p className="Mper_text">From {userInfo?.calorie_norm}</p>
         </div>
 
         <p>Keep up the good work! 😁</p>
@@ -250,21 +205,18 @@ const Main = () => {
             <p className="Mlogout_text">Log out</p>
           </div>
 
-          <h1 className="home_title" >Welcome</h1>
+          <h1 className="home_title">Welcome</h1>
 
           <Link className="Mprofile_zone" to="/profile">
-            <div className="Mprofile_name">{userInfo.username}</div>
+            <div className="Mprofile_name">{userInfo?.username}</div>
             <div className="Mprofile_button">👤</div>
           </Link>
         </div>
 
         <div className="Mright_box">
-
           {/* LEFT AREA */}
           <div className="Mright_left_box">
-
             <div className="Mdate_n_search">
-
               <div className="Mdate">
                 <div className="Mdate_button" onClick={() => changeDate(-1)}>┃◀</div>
                 <p>{selectedDate.toDateString()}</p>
@@ -280,14 +232,14 @@ const Main = () => {
                 />
                 <div className="Msearch_right">🔍︎</div>
               </div>
-
             </div>
 
-            {/* FOOD SELECTED BOX */}
             {searchResults.length > 0 && (
               <div className="Mfood_list_src">
-                {searchResults.map((f, idx) => (
-                  <p className="search_contant" key={idx} onClick={() => handleSelectFood(f)}>{f.name}<br/></p> 
+                {searchResults.map((f) => (
+                  <p key={f.id} className="search_contant" onClick={() => handleSelectFood(f)}>
+                    {f.name}
+                  </p>
                 ))}
               </div>
             )}
@@ -295,27 +247,21 @@ const Main = () => {
             <div className="Madd_food_box">
               <div className="Mfood_pic_big_box">
                 <p className="Mfood_name">{selectedFood.name || "Choose food"}</p>
-                <img
-                  className="Mpic_food"
-                  src={selectedFood.photo || foodDefault}
-                  alt="Извините, изображения нет"
-                />
+                <img className="Mpic_food" src={selectedFood.photo || foodDefault} alt="" />
               </div>
 
               <div className="Madd_food_right_box">
-                <p className="Mfood_right_box_text">Enter quantity:</p>
+                <p>Enter quantity:</p>
                 <input
                   className="Menter_foob_gram"
-                  placeholder="Amount (grams)"
                   value={newAmount}
                   onChange={(e) => setNewAmount(e.target.value)}
                 />
-                <div className="Madd_food_button" onClick={addRow}>
+                <div className="Madd_food_button" onClick={() => addMealMutation.mutate()}>
                   Add
                 </div>
               </div>
             </div>
-
           </div>
 
           {/* RIGHT NOTES */}
@@ -325,26 +271,14 @@ const Main = () => {
 
               <table className="data-table">
                 <tbody className="Mtable_body">
-                  {rows.map((row) => (
+                  {rows.map(row => (
                     <tr key={row.id}>
                       <td className="Mtable_food_name">{row.food_name}</td>
                       <td className="Mtable_food_weight">{row.amount}g</td>
-                      <td className="Mtable_food_radio">
+                      <td>
                         <button
-                          onClick={async () => {
-                            try {
-                              await axios.delete(`http://127.0.0.1:8000/api/meals/${row.id}/`, {
-                                headers: { Authorization: `Bearer ${token}` }
-                              });
-                              const newRows = rows.filter(r => r.id !== row.id);
-                              setRows(newRows);
-                              recalcTotals(newRows); // обновляем суммарные калории и БЖУ
-                            } catch (err) {
-                              console.error(err);
-                              alert("Ошибка удаления продукта");
-                            }
-                          }}
                           className="Delete_button"
+                          onClick={() => deleteMealMutation.mutate(row.id)}
                         >
                           🗑️
                         </button>
@@ -358,7 +292,6 @@ const Main = () => {
           </div>
 
         </div>
-
       </div>
     </div>
   );
