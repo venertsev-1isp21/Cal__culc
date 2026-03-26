@@ -1,26 +1,29 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Link } from 'react-router-dom';
 import axios from 'axios';
-import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 
+import { useQuery } from '@tanstack/react-query';
 import notepadImg from "../assets/notepad.png";
 import foodDefault from "../assets/notebook.png";
 
 import { useAppDispatch, useAppSelector } from "../store/hooks";
 import { setSearchQuery } from "../store/slices/uiSlice";
+import { fetchMeals, addMeal, removeMeal } from "../store/slices/mealsSlice";
 
 const API = "http://127.0.0.1:8000/api";
 
 const Main = () => {
-  const queryClient = useQueryClient();
   const token = localStorage.getItem("access_token");
+  const dispatch = useAppDispatch();
 
   const [selectedDate, setSelectedDate] = useState(new Date());
+  const formattedDate = selectedDate.toISOString().split('T')[0]; // ✅ Сначала объявляем
   const searchQuery = useAppSelector(state => state.ui.searchQuery);
-  const dispatch = useAppDispatch();
+  const { mealsByDate, loading: mealsLoading } = useAppSelector(state => state.meals);
+  const rows = mealsByDate[formattedDate] || [];
+
   const [searchResults, setSearchResults] = useState([]);
   const [newAmount, setNewAmount] = useState("");
-
   const [selectedFood, setSelectedFood] = useState({
     id: null,
     name: "",
@@ -31,16 +34,11 @@ const Main = () => {
     photo: ""
   });
 
+  const authHeader = { headers: { Authorization: `Bearer ${token}` } };
+
   // =============================
   // HELPERS
   // =============================
-  const formatDate = (date) => date.toISOString().split('T')[0];
-  const formattedDate = formatDate(selectedDate);
-
-  const authHeader = {
-    headers: { Authorization: `Bearer ${token}` }
-  };
-
   const changeDate = (days) => {
     const d = new Date(selectedDate);
     d.setDate(d.getDate() + days);
@@ -54,7 +52,7 @@ const Main = () => {
   };
 
   // =============================
-  // QUERIES
+  // USER INFO QUERY
   // =============================
   const { data: userInfo } = useQuery({
     queryKey: ['userInfo'],
@@ -64,81 +62,14 @@ const Main = () => {
     }
   });
 
-  const { data: rows = [], isLoading } = useQuery({
-    queryKey: ['meals', formattedDate],
-    queryFn: async () => {
-      const res = await axios.get(
-        `${API}/meals/?date=${formattedDate}`,
-        authHeader
-      );
-      return res.data;
-    },
-    // ✅ Advanced feature (шаг 4)
-    refetchInterval: 60000
-  });
-
   // =============================
-  // MUTATIONS
+  // LOAD MEALS FOR SELECTED DATE
   // =============================
-  const addMealMutation = useMutation({
-    mutationFn: async () =>
-      axios.post(
-        `${API}/meals/`,
-        {
-          food: selectedFood.id,
-          amount: parseInt(newAmount),
-          date: formattedDate,
-        },
-        authHeader
-      ),
-    onSuccess: () => {
-      queryClient.invalidateQueries(['meals']);
-      setNewAmount("");
-      setSearchQuery("");
-      setSelectedFood({
-        id: null,
-        name: "",
-        calories: 0,
-        proteins: 0,
-        fats: 0,
-        carbohydrates: 0,
-        photo: ""
-      });
+  useEffect(() => {
+    if (token) {
+      dispatch(fetchMeals({ date: formattedDate, token }));
     }
-  });
-
-  // =============================
-  // OPTIMISTIC DELETE (шаг 3)
-  // =============================
-  const deleteMealMutation = useMutation({
-    mutationFn: (id) =>
-      axios.delete(`${API}/meals/${id}/`, authHeader),
-
-    onMutate: async (id) => {
-      await queryClient.cancelQueries(['meals', formattedDate]);
-
-      const previousMeals = queryClient.getQueryData(['meals', formattedDate]);
-
-      queryClient.setQueryData(['meals', formattedDate], old =>
-        old.filter(m => m.id !== id)
-      );
-
-      return { previousMeals };
-    },
-
-    onError: (err, id, context) => {
-      if (context?.previousMeals) {
-        queryClient.setQueryData(
-          ['meals', formattedDate],
-          context.previousMeals
-        );
-      }
-    },
-
-    onSettled: () => {
-      queryClient.invalidateQueries(['meals']);
-    }
-  });
+  }, [formattedDate, token, dispatch]);
 
   // =============================
   // TOTALS
@@ -157,11 +88,9 @@ const Main = () => {
   // =============================
   const handleSearchChange = async (e) => {
     const q = e.target.value;
-    setSearchQuery(q);
+    dispatch(setSearchQuery(q));
 
-    setSelectedFood({
-      id: null, name: "", calories: 0, proteins: 0, fats: 0, carbohydrates: 0, photo: ""
-    });
+    setSelectedFood({ id: null, name: "", calories: 0, proteins: 0, fats: 0, carbohydrates: 0, photo: "" });
 
     if (!q) return setSearchResults([]);
 
@@ -170,28 +99,40 @@ const Main = () => {
   };
 
   const handleSelectFood = (food) => {
-    setSelectedFood({
-      ...food,
-      photo: food.photo || foodDefault
-    });
+    setSelectedFood({ ...food, photo: food.photo || foodDefault });
     setSearchResults([]);
   };
 
-  if (isLoading) return <div>Загрузка...</div>;
+  const handleAddMeal = () => {
+    if (!selectedFood.id || !newAmount) return;
+    dispatch(addMeal({
+      food: selectedFood.id,
+      amount: parseInt(newAmount),
+      date: formattedDate,
+      token
+    }));
+
+    setNewAmount("");
+    setSelectedFood({ id: null, name: "", calories: 0, proteins: 0, fats: 0, carbohydrates: 0, photo: "" });
+    dispatch(setSearchQuery(""));
+  };
+
+  const handleDeleteMeal = (id) => {
+    dispatch(removeMeal({ id, date: formattedDate, token }));
+  };
+
+  if (mealsLoading) return <div>Загрузка...</div>;
 
   return (
     <div className="Mroot">
       {/* LEFT PANEL */}
       <div className="Mleft_per_box">
         <p>Percentage of goal completed</p>
-
         <div className="Mper_circle">
           <h1 className="Mper_text_big">{caloriePercentage}%</h1>
           <p className="Mper_text">From {userInfo?.calorie_norm}</p>
         </div>
-
         <p>Keep up the good work! 😁</p>
-
         <div className="Mbox_params">
           <div className="Mleaft_param_pox"><div>Calories:</div><div>{totalCalories}</div></div>
           <div className="Mleaft_param_pox"><div>Proteins:</div><div>{totalProteins}</div></div>
@@ -202,15 +143,12 @@ const Main = () => {
 
       {/* RIGHT CONTENT */}
       <div className="Mright_big_box">
-
         <div className="Mheader">
           <div className="Mlogout_zone" onClick={handleLogout}>
             <div className="Mlogout_button">↪</div>
             <p className="Mlogout_text">Log out</p>
           </div>
-
           <h1 className="home_title">Welcome</h1>
-
           <Link className="Mprofile_zone" to="/profile">
             <div className="Mprofile_name">{userInfo?.username}</div>
             <div className="Mprofile_button">👤</div>
@@ -226,7 +164,6 @@ const Main = () => {
                 <p>{selectedDate.toDateString()}</p>
                 <div className="Mdate_button" onClick={() => changeDate(1)}>▶┃</div>
               </div>
-
               <div className="Msearch">
                 <input
                   className="Msearch_left"
@@ -253,7 +190,6 @@ const Main = () => {
                 <p className="Mfood_name">{selectedFood.name || "Choose food"}</p>
                 <img className="Mpic_food" src={selectedFood.photo || foodDefault} alt="" />
               </div>
-
               <div className="Madd_food_right_box">
                 <p>Enter quantity:</p>
                 <input
@@ -261,9 +197,7 @@ const Main = () => {
                   value={newAmount}
                   onChange={(e) => setNewAmount(e.target.value)}
                 />
-                <div className="Madd_food_button" onClick={() => addMealMutation.mutate()}>
-                  Add
-                </div>
+                <div className="Madd_food_button" onClick={handleAddMeal}>Add</div>
               </div>
             </div>
           </div>
@@ -272,7 +206,6 @@ const Main = () => {
           <div className="Mright_right_box">
             <div className="notepad" style={{ backgroundImage: `url(${notepadImg})` }}>
               <h2 className="notebook-title">Already eaten</h2>
-
               <table className="data-table">
                 <tbody className="Mtable_body">
                   {rows.map(row => (
@@ -280,21 +213,14 @@ const Main = () => {
                       <td className="Mtable_food_name">{row.food_name}</td>
                       <td className="Mtable_food_weight">{row.amount}g</td>
                       <td>
-                        <button
-                          className="Delete_button"
-                          onClick={() => deleteMealMutation.mutate(row.id)}
-                        >
-                          🗑️
-                        </button>
+                        <button className="Delete_button" onClick={() => handleDeleteMeal(row.id)}>🗑️</button>
                       </td>
                     </tr>
                   ))}
                 </tbody>
               </table>
-
             </div>
           </div>
-
         </div>
       </div>
     </div>

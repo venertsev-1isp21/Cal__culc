@@ -1,24 +1,11 @@
 import { createSelector } from '@reduxjs/toolkit';
 
-// =============================
-// BASE SELECTORS
-// =============================
-export const selectAuth = (state) => state.auth;
-export const selectUI = (state) => state.ui;
-export const selectMeals = (state) => state.meals;
+export const selectMeals = state => state.meals.list;
+export const selectSearchQuery = state => state.ui.searchQuery;
 
-// =============================
-// MEMO SELECTORS (для лабы)
-// =============================
-
-// 1️⃣ Авторизован ли пользователь
-export const selectIsAuthenticated = createSelector(
-  selectAuth,
-  (auth) => auth.isAuthenticated
-);
-
-// 2️⃣ Loading состояние (пример вычисления)
-export const selectIsLoading = createSelector(
-  selectMeals,
-  (meals) => meals.loading
+export const selectFilteredMeals = createSelector(
+  [selectMeals, selectSearchQuery],
+  (meals, query) => {
+    return meals.filter(meal => meal.name.toLowerCase().includes(query.toLowerCase()));
+  }
 );
