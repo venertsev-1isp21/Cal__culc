@@ -2,10 +2,10 @@ import { Routes, Route } from 'react-router-dom';
 import React, { useState } from "react";
 import Home from "./pages/HomePage.js";
 import Contact from "./pages/ContactPage.js";
-import Login from "./pages/LoginPage.js";
+import Login from './features/auth/pages/LoginPage';
 import Main from "./pages/MainPage.js";
-import Register from "./pages/RegisterPage.js";
-import Profile from "./pages/ProfilePage.js";
+import Register from "./features/auth/pages/RegisterPage.js";
+import Profile from "./features/auth/pages/ProfilePage.js";
 import PrivateRoute from './PrivateRoute';
 import Popup from "./components/Popup";
 

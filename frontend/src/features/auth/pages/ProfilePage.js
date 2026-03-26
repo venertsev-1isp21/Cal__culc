@@ -3,9 +3,9 @@ import { Link } from 'react-router-dom';
 import axios from 'axios';
 import { useQuery } from '@tanstack/react-query';
 
-import profDefault from "../assets/prof_img.png";
-import { useAppSelector, useAppDispatch } from "../store/hooks";
-import { logout } from "../store/slices/authSlice";
+import profDefault from "../../../assets/prof_img.png";
+import { useAppSelector, useAppDispatch } from "../../../app/store/hooks";
+import { logout } from "../../../app/store/slices/authSlice";
 
 const API = "http://127.0.0.1:8000/api";
 

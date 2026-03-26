@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { Link } from 'react-router-dom';
 import axios from 'axios';
 
@@ -6,22 +6,28 @@ import { useQuery } from '@tanstack/react-query';
 import notepadImg from "../assets/notepad.png";
 import foodDefault from "../assets/notebook.png";
 
-import { useAppDispatch, useAppSelector } from "../store/hooks";
-import { setSearchQuery } from "../store/slices/uiSlice";
-import { fetchMeals, addMeal, removeMeal } from "../store/slices/mealsSlice";
+import { useAppDispatch, useAppSelector } from "../app/store/hooks";
+import { setSearchQuery } from "../app/store/slices/uiSlice";
+
+import { useMeals } from "../features/meals/model/useMeals";
+import { calculateTotals } from "../shared/utils/calculateTotals";
 
 const API = "http://127.0.0.1:8000/api";
 
-const Main = () => {
+const MainPage = () => {
   const token = localStorage.getItem("access_token");
   const dispatch = useAppDispatch();
 
   const [selectedDate, setSelectedDate] = useState(new Date());
-  const formattedDate = selectedDate.toISOString().split('T')[0]; // ✅ Сначала объявляем
-  const searchQuery = useAppSelector(state => state.ui.searchQuery);
-  const { mealsByDate, loading: mealsLoading } = useAppSelector(state => state.meals);
-  const rows = mealsByDate[formattedDate] || [];
+  const formattedDate = selectedDate.toISOString().split('T')[0];
 
+  const searchQuery = useAppSelector(state => state.ui.searchQuery);
+
+  // ✅ логика вынесена в хук
+  const { rows, loading: mealsLoading, handleAddMeal, handleDeleteMeal } =
+    useMeals(formattedDate, token);
+
+  // локальные состояния (UI)
   const [searchResults, setSearchResults] = useState([]);
   const [newAmount, setNewAmount] = useState("");
   const [selectedFood, setSelectedFood] = useState({
@@ -37,7 +43,7 @@ const Main = () => {
   const authHeader = { headers: { Authorization: `Bearer ${token}` } };
 
   // =============================
-  // HELPERS
+  // HELPERS (оставляем тут — это UI логика)
   // =============================
   const changeDate = (days) => {
     const d = new Date(selectedDate);
@@ -52,7 +58,7 @@ const Main = () => {
   };
 
   // =============================
-  // USER INFO QUERY
+  // USER INFO
   // =============================
   const { data: userInfo } = useQuery({
     queryKey: ['userInfo'],
@@ -63,34 +69,25 @@ const Main = () => {
   });
 
   // =============================
-  // LOAD MEALS FOR SELECTED DATE
+  // TOTALS (вынесено в util)
   // =============================
-  useEffect(() => {
-    if (token) {
-      dispatch(fetchMeals({ date: formattedDate, token }));
-    }
-  }, [formattedDate, token, dispatch]);
-
-  // =============================
-  // TOTALS
-  // =============================
-  const totalCalories = rows.reduce((s, m) => s + (m.calories || 0), 0);
-  const totalProteins = rows.reduce((s, m) => s + (m.proteins || 0), 0);
-  const totalFats = rows.reduce((s, m) => s + (m.fats || 0), 0);
-  const totalCarbs = rows.reduce((s, m) => s + (m.carbohydrates || 0), 0);
+  const totals = calculateTotals(rows);
 
   const caloriePercentage = userInfo?.calorie_norm
-    ? Math.round((totalCalories / userInfo.calorie_norm) * 100)
+    ? Math.round((totals.calories / userInfo.calorie_norm) * 100)
     : 0;
 
   // =============================
-  // SEARCH FOOD
+  // SEARCH
   // =============================
   const handleSearchChange = async (e) => {
     const q = e.target.value;
     dispatch(setSearchQuery(q));
 
-    setSelectedFood({ id: null, name: "", calories: 0, proteins: 0, fats: 0, carbohydrates: 0, photo: "" });
+    setSelectedFood({
+      id: null, name: "", calories: 0,
+      proteins: 0, fats: 0, carbohydrates: 0, photo: ""
+    });
 
     if (!q) return setSearchResults([]);
 
@@ -103,22 +100,16 @@ const Main = () => {
     setSearchResults([]);
   };
 
-  const handleAddMeal = () => {
-    if (!selectedFood.id || !newAmount) return;
-    dispatch(addMeal({
-      food: selectedFood.id,
-      amount: parseInt(newAmount),
-      date: formattedDate,
-      token
-    }));
+  const handleAdd = () => {
+    handleAddMeal(selectedFood.id, newAmount);
 
     setNewAmount("");
-    setSelectedFood({ id: null, name: "", calories: 0, proteins: 0, fats: 0, carbohydrates: 0, photo: "" });
-    dispatch(setSearchQuery(""));
-  };
+    setSelectedFood({
+      id: null, name: "", calories: 0,
+      proteins: 0, fats: 0, carbohydrates: 0, photo: ""
+    });
 
-  const handleDeleteMeal = (id) => {
-    dispatch(removeMeal({ id, date: formattedDate, token }));
+    dispatch(setSearchQuery(""));
   };
 
   if (mealsLoading) return <div>Загрузка...</div>;
@@ -134,10 +125,10 @@ const Main = () => {
         </div>
         <p>Keep up the good work! 😁</p>
         <div className="Mbox_params">
-          <div className="Mleaft_param_pox"><div>Calories:</div><div>{totalCalories}</div></div>
-          <div className="Mleaft_param_pox"><div>Proteins:</div><div>{totalProteins}</div></div>
-          <div className="Mleaft_param_pox"><div>Fats:</div><div>{totalFats}</div></div>
-          <div className="Mleaft_param_pox"><div>Carbohydrates:</div><div>{totalCarbs}</div></div>
+          <div className="Mleaft_param_pox"><div>Calories:</div><div>{totals.calories}</div></div>
+          <div className="Mleaft_param_pox"><div>Proteins:</div><div>{totals.proteins}</div></div>
+          <div className="Mleaft_param_pox"><div>Fats:</div><div>{totals.fats}</div></div>
+          <div className="Mleaft_param_pox"><div>Carbohydrates:</div><div>{totals.carbs}</div></div>
         </div>
       </div>
 
@@ -164,6 +155,7 @@ const Main = () => {
                 <p>{selectedDate.toDateString()}</p>
                 <div className="Mdate_button" onClick={() => changeDate(1)}>▶┃</div>
               </div>
+
               <div className="Msearch">
                 <input
                   className="Msearch_left"
@@ -190,6 +182,7 @@ const Main = () => {
                 <p className="Mfood_name">{selectedFood.name || "Choose food"}</p>
                 <img className="Mpic_food" src={selectedFood.photo || foodDefault} alt="" />
               </div>
+
               <div className="Madd_food_right_box">
                 <p>Enter quantity:</p>
                 <input
@@ -197,7 +190,7 @@ const Main = () => {
                   value={newAmount}
                   onChange={(e) => setNewAmount(e.target.value)}
                 />
-                <div className="Madd_food_button" onClick={handleAddMeal}>Add</div>
+                <div className="Madd_food_button" onClick={handleAdd}>Add</div>
               </div>
             </div>
           </div>
@@ -221,10 +214,11 @@ const Main = () => {
               </table>
             </div>
           </div>
+
         </div>
       </div>
     </div>
   );
 };
 
-export default Main;
+export default MainPage;

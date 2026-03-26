@@ -1,8 +1,8 @@
 import React from "react";
 import { Link } from 'react-router-dom';
 import Contact from "./ContactPage.js"
-import Login from "./LoginPage.js"
-import Register from "./RegisterPage.js"
+import Login from '../features/auth/pages/LoginPage';
+import Register from "../features/auth/pages/RegisterPage.js"
 import "../styles/home.css";
 import Img1 from "../assets/img1.png";
 import Img2 from "../assets/img2.png";

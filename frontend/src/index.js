@@ -10,7 +10,7 @@ import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 import { queryClient } from './queryClient';
 
 import { Provider } from 'react-redux';
-import { store } from './store/store';
+import { store } from './app/store/store';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 
