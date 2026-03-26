@@ -4,20 +4,23 @@ import axios from 'axios';
 import { useQuery } from '@tanstack/react-query';
 
 import profDefault from "../assets/prof_img.png";
+import { useAppSelector, useAppDispatch } from "../store/hooks";
+import { selectIsAuthenticated } from "../store/selectors";
+import { logout } from "../store/slices/authSlice";
 
 const API = "http://127.0.0.1:8000/api";
 
 const Profile = () => {
-  const token = localStorage.getItem("access_token");
+const token = useAppSelector(state => state.auth.token);
+const dispatch = useAppDispatch();
 
   // =============================
   // LOGOUT
   // =============================
-  const handleLogout = () => {
-    localStorage.removeItem('access_token');
-    localStorage.removeItem('refresh_token');
-    window.location.href = '/login';
-  };
+	const handleLogout = () => {
+	  dispatch(logout());
+	  window.location.href = '/login';
+	};
 
   // =============================
   // QUERY: USER INFO

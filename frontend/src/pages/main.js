@@ -6,6 +6,9 @@ import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import notepadImg from "../assets/notepad.png";
 import foodDefault from "../assets/notebook.png";
 
+import { useAppDispatch, useAppSelector } from "../store/hooks";
+import { setSearchQuery } from "../store/slices/uiSlice";
+
 const API = "http://127.0.0.1:8000/api";
 
 const Main = () => {
@@ -13,7 +16,8 @@ const Main = () => {
   const token = localStorage.getItem("access_token");
 
   const [selectedDate, setSelectedDate] = useState(new Date());
-  const [searchQuery, setSearchQuery] = useState("");
+  const searchQuery = useAppSelector(state => state.ui.searchQuery);
+  const dispatch = useAppDispatch();
   const [searchResults, setSearchResults] = useState([]);
   const [newAmount, setNewAmount] = useState("");
 

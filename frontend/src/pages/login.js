@@ -1,46 +1,46 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Link, useNavigate } from 'react-router-dom';
-import axios from "axios";
-import { useMutation } from '@tanstack/react-query';
 import "../styles/log.css";
 
-const API = "http://127.0.0.1:8000/api";
+import { useAppDispatch, useAppSelector } from "../store/hooks";
+import { loginThunk } from "../store/thunks/authThunks";
+import { clearError } from "../store/slices/authSlice";
 
 const Login = () => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
+
+  const dispatch = useAppDispatch();
   const navigate = useNavigate();
 
-  // =============================
-  // LOGIN MUTATION
-  // =============================
-  const loginMutation = useMutation({
-    mutationFn: async () => {
-      const res = await axios.post(`${API}/login/`, {
-        username,
-        password
-      });
-      return res.data;
-    },
-    onSuccess: (data) => {
-      if (data.success) {
-        localStorage.setItem("access_token", data.access);
-        localStorage.setItem("refresh_token", data.refresh);
-        localStorage.setItem("isAuthenticated", "true");
-        navigate("/main");
-      } else {
-        window.showErrorPopup("Неверный логин или пароль!");
-      }
-    },
-    onError: () => {
-      window.showErrorPopup("Ошибка соединения с сервером!");
-    }
-  });
+  const { loading, error, isAuthenticated } = useAppSelector(state => state.auth);
 
+  // =============================
+  // LOGIN
+  // =============================
   const handleLogin = (e) => {
     e.preventDefault();
-    loginMutation.mutate();
+    dispatch(loginThunk({ username, password }));
   };
+
+  // =============================
+  // REDIRECT AFTER LOGIN
+  // =============================
+  useEffect(() => {
+    if (isAuthenticated) {
+      navigate("/main");
+    }
+  }, [isAuthenticated, navigate]);
+
+  // =============================
+  // ERROR HANDLING
+  // =============================
+  useEffect(() => {
+    if (error) {
+      window.showErrorPopup(error);
+      dispatch(clearError());
+    }
+  }, [error, dispatch]);
 
   return (
     <div className="Lroot">
@@ -63,7 +63,7 @@ const Login = () => {
                 className="Linput"
                 value={username}
                 onChange={(e) => setUsername(e.target.value)}
-                disabled={loginMutation.isLoading}
+                disabled={loading}
               />
 
               <p className="Llogin_text">Password</p>
@@ -73,15 +73,15 @@ const Login = () => {
                 className="Linput"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
-                disabled={loginMutation.isLoading}
+                disabled={loading}
               />
 
               <button
                 type="submit"
                 className="Lenter_button"
-                disabled={loginMutation.isLoading}
+                disabled={loading}
               >
-                {loginMutation.isLoading ? "Logging in..." : "Log in ➡️"}
+                {loading ? "Logging in..." : "Log in ➡️"}
               </button>
 
             </form>

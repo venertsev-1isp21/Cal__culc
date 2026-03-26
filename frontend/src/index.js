@@ -9,18 +9,23 @@ import { QueryClientProvider } from '@tanstack/react-query';
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 import { queryClient } from './queryClient';
 
+import { Provider } from 'react-redux';
+import { store } from './store/store';
+
 const root = ReactDOM.createRoot(document.getElementById('root'));
 
 root.render(
-  <QueryClientProvider client={queryClient}>
-    <React.StrictMode>
-      <BrowserRouter>
-        <App />
-      </BrowserRouter>
+	<Provider store={store}>
+	  <QueryClientProvider client={queryClient}>
+		<React.StrictMode>
+		  <BrowserRouter>
+			<App />
+		  </BrowserRouter>
 
-      <ReactQueryDevtools initialIsOpen={false} />
-    </React.StrictMode>
-  </QueryClientProvider>
+		  <ReactQueryDevtools initialIsOpen={false} />
+		</React.StrictMode>
+	  </QueryClientProvider>
+	</Provider>
 );
 
 reportWebVitals();
