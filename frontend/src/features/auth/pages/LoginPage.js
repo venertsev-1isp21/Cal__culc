@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import '../../../styles/log.css';
 
 import LoginForm from '../ui/LoginForm';
-import { useLogin } from '../hooks/useLogin';
+import { useLogin } from '../model/hooks/useLogin';
 
 const LoginPage = () => {
   const { username, setUsername, password, setPassword, loading, handleLogin } =

@@ -1,9 +1,9 @@
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 
-import { useAppDispatch, useAppSelector } from '../../../app/store/hooks';
-import { loginThunk } from '../../../app/store/thunks/authThunks';
-import { clearError } from '../../../app/store/slices/authSlice';
+import { useAppDispatch, useAppSelector } from '../../../../app/store/hooks';
+import { loginThunk } from '../../../../app/store/thunks/authThunks';
+import { clearError } from '../../../../app/store/slices/authSlice';
 
 export const useLogin = () => {
   const [username, setUsername] = useState('');

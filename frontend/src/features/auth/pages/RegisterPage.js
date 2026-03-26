@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import '../../../styles/reg.css';
 
 import RegisterForm from '../ui/RegisterForm';
-import { useRegister } from '../hooks/useRegister';
+import { useRegister } from '../model/hooks/useRegister';
 
 const RegisterPage = () => {
   const [formData, setFormData] = useState({

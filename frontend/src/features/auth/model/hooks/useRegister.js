@@ -1,7 +1,7 @@
 import { useMutation } from '@tanstack/react-query';
 import { useNavigate } from 'react-router-dom';
 
-import { registerApi } from '../api/authApi';
+import { registerApi } from '../../api/authApi';
 
 export const useRegister = () => {
   const navigate = useNavigate();
