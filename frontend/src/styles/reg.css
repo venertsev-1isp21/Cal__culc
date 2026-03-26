@@ -1,4 +1,4 @@
-.Rcenter_box_child{
+.Rcenter_box_child {
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -9,7 +9,7 @@
   background: linear-gradient(120deg, #d1bfaf, #b19882);
   margin-bottom: 200px;
 }
-.Rcenter_inbox{
+.Rcenter_inbox {
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -19,29 +19,29 @@
   background-color: rgba(0, 0, 0, 0.2);
   border-radius: 25px;
 }
-.Rlogin_text{
+.Rlogin_text {
   margin-left: 5px;
   font-size: 15px;
 }
-.Lcenter_box{
+.Lcenter_box {
   display: flex;
   flex-direction: column;
   justify-content: space-evenly;
 }
-.Lleft_box{
+.Lleft_box {
   padding-right: 213px;
 }
-.Lbig_login{
+.Lbig_login {
   font-size: 40px;
   text-align: center;
 }
-.Lform{
-  padding-bottom: 20px
+.Lform {
+  padding-bottom: 20px;
 }
-.Linput{
+.Linput {
   width: 375px;
   height: 40px;
-  background-color: #E7E2D4;
+  background-color: #e7e2d4;
   border-radius: 20px;
 }
 .Lroot {
@@ -55,7 +55,6 @@
    MOBILE ADAPTATION: R/L login boxes
    ========================================= */
 @media (max-width: 768px) {
-
   /* Главный контейнер */
   .Lroot {
     width: 100%;
@@ -75,7 +74,6 @@
     width: 100%;
     align-items: center;
   }
-
 
   .Rcenter_box_child {
     width: 90%;

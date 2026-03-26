@@ -14,11 +14,12 @@
 }
 
 .popup {
-  background: linear-gradient(60deg, #C3A390, #97705B);
+  background: linear-gradient(60deg, #c3a390, #97705b);
   color: white;
   padding: 20px 40px;
   border-radius: 12px;
   font-size: 18px;
-  box-shadow: 4px 4px 8px 0px rgba(34, 60, 80, 0.3);  margin-top: 10px;
+  box-shadow: 4px 4px 8px 0px rgba(34, 60, 80, 0.3);
+  margin-top: 10px;
   text-align: center;
 }

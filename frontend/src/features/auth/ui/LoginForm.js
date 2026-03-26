@@ -1,5 +1,4 @@
-// src/features/auth/ui/LoginForm.jsx
-import React from "react";
+import React from 'react';
 
 const LoginForm = ({
   username,
@@ -7,7 +6,7 @@ const LoginForm = ({
   password,
   setPassword,
   loading,
-  handleLogin
+  handleLogin,
 }) => {
   return (
     <div className="Lcenter_box_child">
@@ -15,7 +14,6 @@ const LoginForm = ({
 
       <div className="Lcenter_inbox">
         <form className="Lform" onSubmit={handleLogin}>
-
           <p className="Llogin_text">Name</p>
           <input
             placeholder="Enter name"
@@ -35,14 +33,9 @@ const LoginForm = ({
             disabled={loading}
           />
 
-          <button
-            type="submit"
-            className="Lenter_button"
-            disabled={loading}
-          >
-            {loading ? "Logging in..." : "Log in ➡️"}
+          <button type="submit" className="Lenter_button" disabled={loading}>
+            {loading ? 'Logging in...' : 'Log in ➡️'}
           </button>
-
         </form>
       </div>
     </div>

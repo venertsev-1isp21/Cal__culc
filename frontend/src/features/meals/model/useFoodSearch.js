@@ -1,7 +1,7 @@
-import { useState } from "react";
-import axios from "axios";
+import { useState } from 'react';
+import axios from 'axios';
 
-const API = "http://127.0.0.1:8000/api";
+const API = 'http://127.0.0.1:8000/api';
 
 export const useFoodSearch = (token) => {
   const [searchResults, setSearchResults] = useState([]);
@@ -13,7 +13,7 @@ export const useFoodSearch = (token) => {
     }
 
     const res = await axios.get(`${API}/foods/?q=${query}`, {
-      headers: { Authorization: `Bearer ${token}` }
+      headers: { Authorization: `Bearer ${token}` },
     });
 
     setSearchResults(res.data);
@@ -22,6 +22,6 @@ export const useFoodSearch = (token) => {
   return {
     searchResults,
     searchFood,
-    setSearchResults
+    setSearchResults,
   };
 };

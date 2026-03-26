@@ -1,6 +1,5 @@
-
-import React, { useEffect } from "react";
-import "../styles/popup.css"
+import React, { useEffect } from 'react';
+import '../styles/popup.css';
 
 const Popup = ({ message, isVisible, onClose }) => {
   useEffect(() => {
@@ -14,9 +13,7 @@ const Popup = ({ message, isVisible, onClose }) => {
 
   return (
     <div className="popup-overlay">
-      <div className="popup">
-        {message}
-      </div>
+      <div className="popup">{message}</div>
     </div>
   );
 };

@@ -1,9 +1,9 @@
-html{
+html {
   width: 100%;
   height: 100%;
   margin: 0;
   color: aliceblue;
-  background: linear-gradient(60deg, #C3A390, #97705B);
+  background: linear-gradient(60deg, #c3a390, #97705b);
   background-position: top center;
   background-size: 100% 100%;
   background-attachment: fixed;
@@ -11,7 +11,7 @@ html{
 }
 
 body {
-  text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.5); 
+  text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.5);
 }
 /* Header */
 header {
@@ -21,17 +21,17 @@ header {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  background-color: #BB917B;
+  background-color: #bb917b;
   border-radius: 20px;
-  box-shadow: 4px 4px 8px 0px rgba(34, 60, 80, 0.3);  margin-top: 10px;
+  box-shadow: 4px 4px 8px 0px rgba(34, 60, 80, 0.3);
+  margin-top: 10px;
 }
 
 header a {
   color: white;
   text-decoration: none;
   margin: 0 10px;
-  text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.5); 
-
+  text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.5);
 }
 
 /* Main Content */

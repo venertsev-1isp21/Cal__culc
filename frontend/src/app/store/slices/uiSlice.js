@@ -1,7 +1,7 @@
 import { createSlice } from '@reduxjs/toolkit';
 
 const initialState = {
-  searchQuery: "",
+  searchQuery: '',
   selectedDate: new Date().toISOString(),
 };
 
@@ -16,9 +16,9 @@ const uiSlice = createSlice({
       state.selectedDate = action.payload;
     },
     resetUI: (state) => {
-      state.searchQuery = "";
-    }
-  }
+      state.searchQuery = '';
+    },
+  },
 });
 
 export const { setSearchQuery, setDate, resetUI } = uiSlice.actions;
