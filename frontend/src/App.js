@@ -1,11 +1,11 @@
 import { Routes, Route } from 'react-router-dom';
 import React, { useState } from "react";
-import Home from "./pages/home.js";
-import Contact from "./pages/contact.js";
-import Login from "./pages/login.js";
-import Main from "./pages/main.js";
-import Register from "./pages/register.js";
-import Profile from "./pages/profile.js";
+import Home from "./pages/HomePage.js";
+import Contact from "./pages/ContactPage.js";
+import Login from "./pages/LoginPage.js";
+import Main from "./pages/MainPage.js";
+import Register from "./pages/RegisterPage.js";
+import Profile from "./pages/ProfilePage.js";
 import PrivateRoute from './PrivateRoute';
 import Popup from "./components/Popup";
 
