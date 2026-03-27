@@ -1,5 +1,6 @@
 import { Routes, Route } from 'react-router-dom';
 import React, { useState } from 'react';
+import { useAppSelector } from './app/store/hooks';
 
 import Home from './pages/HomePage.js';
 import Contact from './pages/ContactPage.js';
@@ -13,9 +14,9 @@ import Popup from './components/Popup';
 function App() {
   const [popupVisible, setPopupVisible] = useState(false);
   const [popupMessage, setPopupMessage] = useState('');
-  const [isLoggedIn, setIsLoggedIn] = useState(
-    !!localStorage.getItem('access')
-  );
+
+  // состояние авторизации из Redux
+  const { isAuthenticated } = useAppSelector((state) => state.auth);
 
   // глобальная функция для вызова всплывающего окна
   window.showErrorPopup = (message) => {
@@ -34,23 +35,17 @@ function App() {
 
       {/* Маршруты */}
       <Routes>
-        <Route
-          path="/"
-          element={<Home onLogin={() => setIsLoggedIn(true)} />}
-        />
+        <Route path="/" element={<Home />} />
         <Route path="/contact" element={<Contact />} />
         <Route
           path="/main"
           element={
-            <PrivateRoute>
+            <PrivateRoute isAuthenticated={isAuthenticated}>
               <Main />
             </PrivateRoute>
           }
         />
-        <Route
-          path="/login"
-          element={<Login onLogin={() => setIsLoggedIn(true)} />}
-        />
+        <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
         <Route path="/profile" element={<Profile />} />
       </Routes>

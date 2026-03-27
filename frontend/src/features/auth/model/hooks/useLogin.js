@@ -22,10 +22,10 @@ export const useLogin = () => {
     dispatch(loginThunk({ username, password }));
   };
 
-  // REDIRECT
+  // REDIRECT после успешного логина
   useEffect(() => {
     if (isAuthenticated) {
-      navigate('/main');
+      navigate('/main', { replace: true });
     }
   }, [isAuthenticated, navigate]);
 
