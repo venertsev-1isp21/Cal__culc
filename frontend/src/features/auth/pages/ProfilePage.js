@@ -25,12 +25,12 @@ const ProfilePage = () => {
     <div className="Lroot">
       <div className="Lleft_box">
         <Link to="/main" className="Lbutton_back">
-          ⬅️ Back
+          ⬅️ Назад
         </Link>
       </div>
 
       <div className="Lcenter_box">
-        <p className="Lbig_login">Profile</p>
+        <p className="Lbig_login">Профиль</p>
 
         <ProfileCard userInfo={userInfo} />
       </div>
@@ -38,7 +38,7 @@ const ProfilePage = () => {
       <div className="Lright_box">
         <div className="Mlogout_zone" onClick={handleLogout}>
           <div className="Mlogout_button">↪</div>
-          <p className="Mlogout_text">Log out</p>
+          <p className="Mlogout_text">Выйти</p>
         </div>
       </div>
     </div>

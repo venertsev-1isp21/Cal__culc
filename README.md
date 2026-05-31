@@ -91,7 +91,7 @@ python manage.py runserver
 ⚙️ Скрипты и команды
 
 Frontend:
-
+figma = https://www.figma.com/design/adpqx2tUEs7C5yqoB1sic1/Untitled?node-id=0-1&t=DoAfkwkHjRMOygEQ-1
 Команда	Назначение
 npm start	Запустить dev‑сервер
 npm run build	Создать production‑сборку

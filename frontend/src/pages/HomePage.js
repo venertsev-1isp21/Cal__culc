@@ -13,26 +13,25 @@ const Home = () => {
     <div>
       {/* Header */}
       <header>
-        <Link to="/contact">Contact us</Link>
-        <h1 className="home_title">Welcome!</h1>
+        <Link to="/contact">Контакты</Link>
+        <h1 className="home_title">Добро пожаловать!</h1>
         <div>
-          <Link to="/login">Log in </Link>
-          <Link to="/register">Sign in</Link>
+          <Link to="/login">Войти </Link>
+          <Link to="/register">Регистрация</Link>
         </div>
       </header>
 
       {/* Main Content */}
       <section>
         <div className="text1">
-          <h2>About the Service</h2>
+          <h2>О сервисе</h2>
           <p>
-            Welcome to <b>CalCul</b> - your personal assistant for managing
-            nutrition and calorie tracking! We created this service to make
-            controlling your diet simple, convenient, and effective. Here, you
-            can track the calorie content of foods, calculate the balance of
-            proteins, fats, and carbohydrates, and plan your meals according to
-            your goals—whether it's weight loss, muscle gain, or weight
-            maintenance.
+            Добро пожаловать в <b>CalCul</b> - ваш личный помощник для управления
+            Питание и отслеживание калорий! Мы создали этот сервис, чтобы сделать
+            Контроль вашей диеты прост, удобен и эффективен. Вот, ты
+            можно отслеживать калорийность продуктов, рассчитать баланс
+            Белки, жиры и углеводы и планируйте свои блюда в соответствии с
+            вашими целями - будь то потеря веса, увеличение мышц или вес.
           </p>
         </div>
 
@@ -49,17 +48,16 @@ const Home = () => {
         <div className="text2">
           <ul>
             <li>
-              <span>🔷</span> Easy calorie tracking - just add foods, and we’ll
-              calculate everything for you.
+              <span>🔷</span> Легкое отслеживание калорий - просто добавьте продукты, и мы
+              рассчитаем все за вас.
             </li>
             <li>
-              <span>🔷</span> Diet analysis - monitor your nutritional balance
-              and receive recommendations.
+              <span>🔷</span> Анализ диеты - следите за своим питанием.
             </li>
             <li>
-              Our service helps you take a mindful approach to nutrition, build
-              healthy habits, and achieve your desired results. Start today -
-              your journey to a healthier lifestyle begins here! 🚀
+              Наш сервис поможет вам осознанно подойти к питанию, построить
+              здоровые привычки и достижение желаемых результатов. Начните сегодня -
+              ваше путешествие к здоровому образу жизни начинается здесь! 🚀
             </li>
           </ul>
         </div>

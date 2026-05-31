@@ -11,13 +11,13 @@ const Contact = () => {
   return (
     <div className="contact_root">
       <div className="header">
-        <Link to="/main">Main</Link>
+        <Link to="/main">Главная</Link>
         <Link to="/">
-          <h1 className="home_title">Welcome!</h1>
+          <h1 className="home_title">Добро пожаловать!</h1>
         </Link>
         <div>
-          <Link to="/login">Log in </Link>
-          <Link to="/register">Sign in</Link>
+          <Link to="/login">Войти </Link>
+          <Link to="/register">Регистрация</Link>
         </div>
       </div>
 

@@ -11,28 +11,28 @@ const ProfileCard = ({ userInfo }) => {
 
       <div className="Lcenter_inbox">
         <div className="LProf_box">
-          <p className="Llogin_text">Height:</p>
+          <p className="Llogin_text">рост:</p>
           <p className="Llogin_text">{userInfo.height} cm</p>
         </div>
 
         <div className="LProf_box">
-          <p className="Llogin_text">Weight:</p>
+          <p className="Llogin_text">Вес:</p>
           <p className="Llogin_text">{userInfo.weight} kg</p>
         </div>
 
         <div className="LProf_box">
-          <p className="Llogin_text">Age:</p>
+          <p className="Llogin_text">Возраст:</p>
           <p className="Llogin_text">{userInfo.age}</p>
         </div>
 
         <div className="LProf_box">
-          <p className="Llogin_text">Gender:</p>
+          <p className="Llogin_text">Пол:</p>
           <p className="Llogin_text">{userInfo.gender}</p>
         </div>
 
         <div className="LProf_box">
-          <p className="Llogin_text">Calorie Norm:</p>
-          <p className="Llogin_text">{userInfo.calorie_norm} kcal</p>
+          <p className="Llogin_text">Норма калорий:</p>
+          <p className="Llogin_text">{userInfo.calorie_norm} ккал</p>
         </div>
       </div>
     </div>

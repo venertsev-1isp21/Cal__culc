@@ -13,12 +13,12 @@ const LoginPage = () => {
     <div className="Lroot">
       <div className="Lleft_box">
         <Link to="/contact" className="Lbutton_back">
-          ⬅️ Back
+          ⬅️ Назад
         </Link>
       </div>
 
       <div className="Lcenter_box">
-        <p className="Lbig_login">👋Log in</p>
+        <p className="Lbig_login">👋Авторизация</p>
 
         <LoginForm
           username={username}

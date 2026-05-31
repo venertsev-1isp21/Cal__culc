@@ -14,7 +14,6 @@ const RegisterForm = ({ formData, handleChange, handleSubmit, loading }) => {
 
                 <input
                   name={field}
-                  placeholder={`Enter ${field}`}
                   className="Linput"
                   type={field === 'password' ? 'password' : 'text'}
                   value={formData[field]}
@@ -25,7 +24,7 @@ const RegisterForm = ({ formData, handleChange, handleSubmit, loading }) => {
           )}
 
           <button type="submit" className="Lenter_button" disabled={loading}>
-            {loading ? 'Registering...' : '➡️ Register'}
+            {loading ? 'Подождите...' : '➡️ Регистрация'}
           </button>
         </form>
       </div>

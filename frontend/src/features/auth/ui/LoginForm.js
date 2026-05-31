@@ -10,23 +10,21 @@ const LoginForm = ({
 }) => {
   return (
     <div className="Lcenter_box_child">
-      <p className="Lenter_y_data">Enter your data:</p>
+      <p className="Lenter_y_data">Введите данные:</p>
 
       <div className="Lcenter_inbox">
         <form className="Lform" onSubmit={handleLogin}>
-          <p className="Llogin_text">Name</p>
+          <p className="Llogin_text">Имя</p>
           <input
-            placeholder="Enter name"
             className="Linput"
             value={username}
             onChange={(e) => setUsername(e.target.value)}
             disabled={loading}
           />
 
-          <p className="Llogin_text">Password</p>
+          <p className="Llogin_text">Пароль</p>
           <input
             type="password"
-            placeholder="Enter password"
             className="Linput"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
@@ -34,7 +32,7 @@ const LoginForm = ({
           />
 
           <button type="submit" className="Lenter_button" disabled={loading}>
-            {loading ? 'Logging in...' : 'Log in ➡️'}
+            {loading ? 'Подождите...' : 'Войти ➡️'}
           </button>
         </form>
       </div>

@@ -33,12 +33,12 @@ const RegisterPage = () => {
     <div className="Lroot">
       <div className="Lleft_box">
         <Link to="/contact" className="Lbutton_back">
-          ⬅️ Back
+          ⬅️ Назад
         </Link>
       </div>
 
       <div className="Lcenter_box">
-        <p className="Lbig_login">Register</p>
+        <p className="Lbig_login">Регистрация</p>
 
         <RegisterForm
           formData={formData}

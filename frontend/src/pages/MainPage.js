@@ -127,27 +127,27 @@ const MainPage = () => {
     <div className="Mroot">
       {/* LEFT PANEL */}
       <div className="Mleft_per_box">
-        <p>Percentage of goal completed</p>
+        <p>Процент от выполненной цели</p>
         <div className="Mper_circle">
           <h1 className="Mper_text_big">{caloriePercentage}%</h1>
-          <p className="Mper_text">From {userInfo?.calorie_norm}</p>
+          <p className="Mper_text">Из {userInfo?.calorie_norm}</p>
         </div>
-        <p>Keep up the good work! 😁</p>
+        <p>Продолжайте в том же духе! 😁</p>
         <div className="Mbox_params">
           <div className="Mleaft_param_pox">
-            <div>Calories:</div>
+            <div>Калории:</div>
             <div>{totals.calories}</div>
           </div>
           <div className="Mleaft_param_pox">
-            <div>Proteins:</div>
+            <div>Белки:</div>
             <div>{totals.proteins}</div>
           </div>
           <div className="Mleaft_param_pox">
-            <div>Fats:</div>
+            <div>Жиры:</div>
             <div>{totals.fats}</div>
           </div>
           <div className="Mleaft_param_pox">
-            <div>Carbohydrates:</div>
+            <div>Углеводы:</div>
             <div>{totals.carbs}</div>
           </div>
         </div>
@@ -158,9 +158,9 @@ const MainPage = () => {
         <div className="Mheader">
           <div className="Mlogout_zone" onClick={handleLogout}>
             <div className="Mlogout_button">↪</div>
-            <p className="Mlogout_text">Log out</p>
+            <p className="Mlogout_text">Выйти</p>
           </div>
-          <h1 className="home_title">Welcome</h1>
+          <h1 className="home_title">Добро пожаловать</h1>
           <Link className="Mprofile_zone" to="/profile">
             <div className="Mprofile_name">{userInfo?.username}</div>
             <div className="Mprofile_button">👤</div>
@@ -184,7 +184,7 @@ const MainPage = () => {
               <div className="Msearch">
                 <input
                   className="Msearch_left"
-                  placeholder="Search food"
+                  placeholder="Поиск еды"
                   value={searchQuery}
                   onChange={handleSearchChange}
                 />
@@ -209,7 +209,7 @@ const MainPage = () => {
             <div className="Madd_food_box">
               <div className="Mfood_pic_big_box">
                 <p className="Mfood_name">
-                  {selectedFood.name || 'Choose food'}
+                  {selectedFood.name || 'Выберете продукт'}
                 </p>
                 <img
                   className="Mpic_food"
@@ -219,7 +219,7 @@ const MainPage = () => {
               </div>
 
               <div className="Madd_food_right_box">
-                <p>Enter quantity:</p>
+                <p>Введите количество:</p>
                 <input
                   className="Menter_foob_gram"
                   type="number"
@@ -227,7 +227,7 @@ const MainPage = () => {
                   onChange={(e) => setNewAmount(e.target.value)}
                 />
                 <div className="Madd_food_button" onClick={handleAdd}>
-                  Add
+                  Добавить
                 </div>
               </div>
             </div>
@@ -239,7 +239,7 @@ const MainPage = () => {
               className="notepad"
               style={{ backgroundImage: `url(${notepadImg})` }}
             >
-              <h2 className="notebook-title">Already eaten</h2>
+              <h2 className="notebook-title">Съедено:</h2>
               <table className="data-table">
                 <tbody className="Mtable_body">
                   {rows.map((row) => (
